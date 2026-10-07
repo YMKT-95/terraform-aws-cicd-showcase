@@ -1,0 +1,253 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120" role="img" aria-labelledby="title desc">
+  <title id="title">Terraform-managed AWS Application with GitHub Actions CI/CD</title>
+  <desc id="desc">Architecture diagram showing local Terraform infrastructure management, GitHub Actions validation, publishing and deployment, and an AWS Sydney environment with OIDC authentication, Systems Manager, VPC, public subnet, EC2, Docker, and a Node.js application.</desc>
+  <defs>
+    <style>
+      .bg { fill:#f7f9fc; }
+      .panel { fill:#ffffff; stroke:#cbd5e1; stroke-width:2; }
+      .section { fill:#f8fafc; stroke:#94a3b8; stroke-width:2; }
+      .aws { fill:#fffaf0; stroke:#f59e0b; stroke-width:3; }
+      .region { fill:#fffcf5; stroke:#fbbf24; stroke-width:2; }
+      .vpc { fill:#f0fdf4; stroke:#22c55e; stroke-width:2.5; }
+      .subnet { fill:#f7fee7; stroke:#84cc16; stroke-width:2; }
+      .node { fill:#ffffff; stroke:#94a3b8; stroke-width:1.7; }
+      .node-soft { fill:#f8fafc; stroke:#cbd5e1; stroke-width:1.5; }
+      .node-blue { fill:#eff6ff; stroke:#60a5fa; stroke-width:1.8; }
+      .node-orange { fill:#fff7ed; stroke:#fb923c; stroke-width:1.8; }
+      .node-green { fill:#f0fdf4; stroke:#4ade80; stroke-width:1.8; }
+      .node-purple { fill:#faf5ff; stroke:#a78bfa; stroke-width:1.8; }
+      .note { fill:#fffbea; stroke:#eab308; stroke-width:1.5; }
+      .title { font:700 28px Inter,Segoe UI,Arial,sans-serif; fill:#0f172a; }
+      .section-title { font:700 18px Inter,Segoe UI,Arial,sans-serif; fill:#0f172a; }
+      .label { font:600 15px Inter,Segoe UI,Arial,sans-serif; fill:#0f172a; }
+      .body { font:400 13px Inter,Segoe UI,Arial,sans-serif; fill:#334155; }
+      .small { font:400 12px Inter,Segoe UI,Arial,sans-serif; fill:#475569; }
+      .tiny { font:400 11px Inter,Segoe UI,Arial,sans-serif; fill:#475569; }
+      .white-label { font:600 14px Inter,Segoe UI,Arial,sans-serif; fill:#ffffff; }
+      .infra { stroke:#7c3aed; stroke-width:3; fill:none; marker-end:url(#arrow-purple); }
+      .infra-dash { stroke:#7c3aed; stroke-width:3; fill:none; stroke-dasharray:9 7; marker-end:url(#arrow-purple); }
+      .delivery { stroke:#ea580c; stroke-width:3; fill:none; marker-end:url(#arrow-orange); }
+      .delivery-dash { stroke:#ea580c; stroke-width:2.6; fill:none; stroke-dasharray:8 6; marker-end:url(#arrow-orange); }
+      .delivery-bidir { stroke:#ea580c; stroke-width:2.6; fill:none; stroke-dasharray:8 6; marker-start:url(#arrow-orange-start); marker-end:url(#arrow-orange); }
+      .access { stroke:#16a34a; stroke-width:3.5; fill:none; marker-end:url(#arrow-green); }
+      .neutral { stroke:#64748b; stroke-width:2; fill:none; marker-end:url(#arrow-gray); }
+      .divider { stroke:#cbd5e1; stroke-width:1.4; }
+    </style>
+    <marker id="arrow-purple" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#7c3aed"/></marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#ea580c"/></marker>
+    <marker id="arrow-orange-start" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M9,0 L9,6 L0,3 z" fill="#ea580c"/></marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#16a34a"/></marker>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#64748b"/></marker>
+  </defs>
+
+  <rect class="bg" x="0" y="0" width="1800" height="1120"/>
+  <text class="title" x="900" y="48" text-anchor="middle">Terraform-managed AWS Application with GitHub Actions CI/CD</text>
+
+  <!-- Legend -->
+  <g transform="translate(536,68)">
+    <line x1="0" y1="8" x2="46" y2="8" class="infra-dash"/>
+    <text class="small" x="56" y="12">Infrastructure management</text>
+    <line x1="245" y1="8" x2="291" y2="8" class="delivery"/>
+    <text class="small" x="301" y="12">Application delivery</text>
+    <line x1="472" y1="8" x2="518" y2="8" class="access"/>
+    <text class="small" x="528" y="12">User access</text>
+  </g>
+
+  <!-- Left area -->
+  <rect class="section" x="34" y="108" width="376" height="884" rx="18"/>
+  <text class="section-title" x="222" y="142" text-anchor="middle">Development &amp; infrastructure</text>
+
+  <rect class="panel" x="58" y="184" width="328" height="424" rx="16"/>
+  <rect x="58" y="184" width="328" height="48" rx="16" fill="#334155"/>
+  <path d="M58 216 H386 V232 H58 Z" fill="#334155"/>
+  <text class="white-label" x="222" y="214" text-anchor="middle">Developer workstation</text>
+
+  <rect class="node-purple" x="88" y="268" width="268" height="106" rx="12"/>
+  <text class="label" x="222" y="302" text-anchor="middle">Terraform CLI</text>
+  <text class="body" x="222" y="328" text-anchor="middle">Uses developer AWS IAM identity</text>
+  <text class="small" x="222" y="350" text-anchor="middle">Calls AWS APIs directly</text>
+
+  <rect class="node-purple" x="88" y="424" width="268" height="104" rx="12"/>
+  <text class="label" x="222" y="459" text-anchor="middle">Local Terraform state</text>
+  <text class="body" x="222" y="485" text-anchor="middle">Stored on developer workstation</text>
+  <text class="small" x="222" y="507" text-anchor="middle">No S3 backend / HCP Terraform</text>
+
+  <rect class="node-purple" x="88" y="548" width="268" height="44" rx="10"/>
+  <text class="tiny" x="222" y="567" text-anchor="middle">VPC · subnet · route · SG · EC2</text>
+  <text class="tiny" x="222" y="585" text-anchor="middle">EC2 instance role &amp; instance profile</text>
+
+  <line x1="222" y1="374" x2="222" y2="424" class="infra"/>
+  <text class="tiny" x="235" y="403">Read / update state</text>
+
+  <rect class="node-green" x="74" y="770" width="296" height="108" rx="14"/>
+  <text class="label" x="222" y="808" text-anchor="middle">Allowed client browser</text>
+  <text class="body" x="222" y="836" text-anchor="middle">Source IP restricted to client /32</text>
+  <text class="small" x="222" y="858" text-anchor="middle">Application access over HTTP :80</text>
+
+  <!-- Middle area -->
+  <rect class="section" x="432" y="108" width="496" height="884" rx="18"/>
+  <text class="section-title" x="680" y="142" text-anchor="middle">CI/CD — outside AWS</text>
+
+  <rect class="node" x="508" y="190" width="344" height="76" rx="12"/>
+  <text class="label" x="680" y="220" text-anchor="middle">GitHub repository</text>
+  <text class="small" x="680" y="244" text-anchor="middle">Source, Terraform and workflow definitions</text>
+
+  <path d="M680 266 V310" class="delivery"/>
+  <rect class="node-orange" x="605" y="276" width="150" height="25" rx="12"/>
+  <text class="tiny" x="680" y="293" text-anchor="middle">Push to main</text>
+
+  <rect class="panel" x="486" y="312" width="388" height="430" rx="16"/>
+  <rect x="486" y="312" width="388" height="48" rx="16" fill="#24292f"/>
+  <path d="M486 344 H874 V360 H486 Z" fill="#24292f"/>
+  <text class="white-label" x="680" y="342" text-anchor="middle">GitHub Actions</text>
+
+  <rect class="node-soft" x="522" y="388" width="316" height="88" rx="12"/>
+  <circle cx="552" cy="421" r="17" fill="#64748b"/>
+  <text class="white-label" x="552" y="426" text-anchor="middle">1</text>
+  <text class="label" x="582" y="414">Validate</text>
+  <text class="small" x="582" y="438">Terraform checks · container checks</text>
+  <text class="small" x="582" y="453">Deployment script tests</text>
+  <text class="tiny" x="582" y="468">(mocked rollback)</text>
+
+  <path d="M680 476 V502" class="neutral"/>
+  <rect class="node-orange" x="522" y="504" width="316" height="88" rx="12"/>
+  <circle cx="552" cy="537" r="17" fill="#ea580c"/>
+  <text class="white-label" x="552" y="542" text-anchor="middle">2</text>
+  <text class="label" x="582" y="530">Publish</text>
+  <text class="small" x="582" y="554">Build AMD64 Docker image</text>
+  <text class="small" x="582" y="574">Publish image with source revision</text>
+
+  <path d="M680 592 V618" class="neutral"/>
+  <rect class="node-orange" x="522" y="620" width="316" height="88" rx="12"/>
+  <circle cx="552" cy="653" r="17" fill="#ea580c"/>
+  <text class="white-label" x="552" y="658" text-anchor="middle">3</text>
+  <text class="label" x="582" y="646">Deploy</text>
+  <text class="small" x="582" y="670">Use immutable image digest</text>
+  <text class="small" x="582" y="690">Update container on the existing EC2</text>
+
+  <rect class="node-orange" x="532" y="798" width="296" height="98" rx="14"/>
+  <text class="label" x="680" y="832" text-anchor="middle">GHCR</text>
+  <text class="body" x="680" y="858" text-anchor="middle">Container registry</text>
+  <text class="small" x="680" y="880" text-anchor="middle">Image tagged with source revision</text>
+  <path d="M838 548 C900 548 900 786 828 828" class="delivery"/>
+  <text class="tiny" x="856" y="685" transform="rotate(90 856 685)" text-anchor="middle">Push image with source revision</text>
+
+  <!-- AWS account and identity -->
+  <rect class="aws" x="952" y="108" width="814" height="884" rx="18"/>
+  <text class="section-title" x="1359" y="142" text-anchor="middle">AWS Account</text>
+
+  <rect class="node-blue" x="990" y="170" width="238" height="88" rx="12"/>
+  <text class="label" x="1109" y="201" text-anchor="middle">IAM OIDC provider / AWS STS</text>
+  <text class="small" x="1109" y="226" text-anchor="middle">Exchange GitHub OIDC token</text>
+  <text class="tiny" x="1109" y="246" text-anchor="middle">Temporary AWS credentials</text>
+
+  <rect class="node-blue" x="1270" y="170" width="266" height="88" rx="12"/>
+  <text class="label" x="1403" y="200" text-anchor="middle">GitHub deployment role</text>
+  <text class="small" x="1403" y="225" text-anchor="middle">Trust: this repository + main branch</text>
+  <text class="tiny" x="1403" y="246" text-anchor="middle">Separate from EC2 instance role</text>
+  <path d="M1228 214 H1270" class="delivery"/>
+
+  <rect class="node-blue" x="1126" y="266" width="274" height="24" rx="12"/>
+  <text class="tiny" x="1263" y="282" text-anchor="middle">One-time administrator setup</text>
+
+  <path d="M874 636 C930 636 940 214 990 214" class="delivery-dash"/>
+  <text class="tiny" x="921" y="388" transform="rotate(-90 921 388)" text-anchor="middle">OIDC federation</text>
+
+  <!-- Region -->
+  <rect class="region" x="982" y="298" width="752" height="662" rx="16"/>
+  <text class="label" x="1006" y="328">Sydney — ap-southeast-2</text>
+
+  <rect class="node-blue" x="1008" y="354" width="246" height="102" rx="12"/>
+  <text class="label" x="1131" y="386" text-anchor="middle">AWS Systems Manager</text>
+  <text class="body" x="1131" y="411" text-anchor="middle">Run Command</text>
+  <text class="small" x="1131" y="435" text-anchor="middle">No inbound management port</text>
+
+  <path d="M838 664 C930 664 930 405 1008 405" class="delivery"/>
+  <rect class="node-orange" x="875" y="482" width="116" height="58" rx="10"/>
+  <text class="tiny" x="933" y="504" text-anchor="middle">SendCommand</text>
+  <text class="tiny" x="933" y="522" text-anchor="middle">temporary creds</text>
+
+  <!-- VPC -->
+  <rect class="vpc" x="1062" y="488" width="642" height="436" rx="16"/>
+  <text class="label" x="1090" y="518">VPC — 10.20.0.0/16</text>
+
+  <rect class="node-green" x="1012" y="552" width="146" height="76" rx="12"/>
+  <text class="label" x="1085" y="580" text-anchor="middle">Internet Gateway</text>
+  <text class="small" x="1085" y="605" text-anchor="middle">VPC edge</text>
+
+  <rect class="node-soft" x="1088" y="716" width="208" height="112" rx="12"/>
+  <text class="label" x="1192" y="748" text-anchor="middle">Route table</text>
+  <text class="body" x="1192" y="775" text-anchor="middle">0.0.0.0/0</text>
+  <text class="body" x="1192" y="799" text-anchor="middle">→ Internet Gateway</text>
+  <path d="M1192 716 C1192 670 1120 670 1090 628" class="neutral"/>
+
+  <rect class="subnet" x="1316" y="538" width="356" height="356" rx="14"/>
+  <text class="label" x="1338" y="568">Public subnet — 10.20.1.0/24</text>
+  <text class="small" x="1338" y="588">Availability Zone: ap-southeast-2a</text>
+
+  <rect class="panel" x="1342" y="600" width="304" height="212" rx="14"/>
+  <text class="label" x="1494" y="630" text-anchor="middle">EC2 — t3.micro</text>
+  <text class="small" x="1494" y="651" text-anchor="middle">Amazon Linux 2023</text>
+  <line class="divider" x1="1362" y1="664" x2="1626" y2="664"/>
+
+  <rect class="node-blue" x="1366" y="682" width="112" height="54" rx="9"/>
+  <text class="label" x="1422" y="714" text-anchor="middle">SSM Agent</text>
+
+  <rect class="node-orange" x="1494" y="682" width="128" height="104" rx="9"/>
+  <text class="label" x="1558" y="707" text-anchor="middle">Docker</text>
+  <rect class="node" x="1508" y="720" width="100" height="48" rx="7"/>
+  <text class="small" x="1558" y="740" text-anchor="middle">Node.js app</text>
+  <text class="small" x="1558" y="758" text-anchor="middle">port 3000</text>
+
+  <text class="tiny" x="1494" y="802" text-anchor="middle">EC2 :80 → container :3000</text>
+
+  <rect class="note" x="1338" y="818" width="312" height="60" rx="10"/>
+  <text class="tiny" x="1352" y="839">Security Group: inbound TCP 80 from client /32</text>
+  <text class="tiny" x="1352" y="856">No inbound SSH rule</text>
+  <text class="tiny" x="1352" y="873">Encrypted gp3 root volume — 8 GiB</text>
+
+  <!-- EC2 role -->
+  <rect class="node-purple" x="1038" y="846" width="256" height="62" rx="11"/>
+  <text class="label" x="1166" y="870" text-anchor="middle">EC2 instance role</text>
+  <text class="tiny" x="1166" y="891" text-anchor="middle">AmazonSSMManagedInstanceCore</text>
+  <path d="M1294 877 C1320 877 1320 756 1342 756" class="infra-dash"/>
+
+  <!-- Infrastructure provision path -->
+  <path d="M356 318 C414 318 420 164 468 164 H730 V176 H760" class="infra-dash"/>
+  <rect class="node-purple" x="760" y="150" width="198" height="52" rx="11"/>
+  <text class="small" x="859" y="172" text-anchor="middle">AWS API</text>
+  <text class="tiny" x="859" y="190" text-anchor="middle">Developer IAM identity</text>
+  <path d="M958 176 V156 H1718 V520 H1704" class="infra-dash"/>
+  <path d="M1718 520 V620 H1646" class="infra-dash"/>
+  <path d="M1718 620 V877 H1294" class="infra-dash"/>
+  <text class="small" x="520" y="157" fill="#6d28d9">Provision and manage infrastructure</text>
+
+  <!-- Runtime application delivery -->
+  <path d="M828 850 C900 850 900 938 990 938 H1688 V734 H1622" class="delivery"/>
+  <rect class="node-orange" x="960" y="898" width="302" height="52" rx="10"/>
+  <text class="tiny" x="1111" y="919" text-anchor="middle">Image pulled by EC2 over HTTPS</text>
+  <text class="tiny" x="1111" y="937" text-anchor="middle">Pinned by immutable digest</text>
+
+  <!-- SSM control channel -->
+  <path d="M1254 405 C1390 405 1370 682 1422 682" class="delivery-bidir"/>
+  <rect class="node-orange" x="1272" y="390" width="204" height="52" rx="10"/>
+  <text class="tiny" x="1374" y="411" text-anchor="middle">Agent-initiated outbound HTTPS</text>
+  <text class="tiny" x="1374" y="429" text-anchor="middle">No inbound management port</text>
+
+  <!-- User access path -->
+  <path d="M370 824 V946 H958 C1000 946 1000 590 1012 590" class="access"/>
+  <path d="M1158 590 C1220 590 1260 766 1494 766" class="access"/>
+  <rect class="node-green" x="720" y="927" width="116" height="38" rx="10"/>
+  <text class="small" x="778" y="951" text-anchor="middle">HTTP :80</text>
+
+  <!-- Deployment recovery note -->
+  <rect class="note" x="996" y="636" width="290" height="68" rx="10"/>
+  <text class="tiny" x="1012" y="657">Verify candidate → switch container</text>
+  <text class="tiny" x="1012" y="676">→ verify health and revision</text>
+  <text class="tiny" x="1012" y="695">→ restore previous container on failure</text>
+
+  <!-- Footer -->
+  <rect x="34" y="1016" width="1732" height="72" rx="14" fill="#e2e8f0"/>
+  <text class="label" x="900" y="1047" text-anchor="middle">Terraform manages infrastructure. GitHub Actions deploys application containers to the existing instance.</text>
+  <text class="small" x="900" y="1073" text-anchor="middle">Current scope excludes load balancer, NAT Gateway, database, HTTPS and automatic scaling.</text>
+</svg>
